@@ -10,10 +10,8 @@ const config = require('./config');
 passport.use(new SpotifyStrategy(config.Spotify, 
     (accessToken, refreshToken, expiresIn, profile, done) => {
         SpotifyClient.init(accessToken, refreshToken, expiresIn, profile);
-        console.log('login done');
-        console.log(SpotifyClient.accessToken);
-        console.log(SpotifyClient.profile);
-        return done(null, SpotifyClient);
+
+        return done(null, profile);
     })
 );
 
@@ -24,4 +22,4 @@ router.get('/spotify/cb',
         res.redirect('/pass');
     });
 
-exports.router = router;
+module.exports.router = router;

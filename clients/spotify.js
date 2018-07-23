@@ -12,9 +12,9 @@ class SpotifyClient {
         this.profile = profile;
         this.config = config.Spotify;
         this.api = new SpotifyWebApi({
-            clientId: this.config.clientID,
+            clientId: this.config.clientId,
             clientSecret: this.config.clientSecret,
-            redirectUri: this.config.callbackURL
+            redirectUri: this.config.redirectUri
         });
         this.api.setAccessToken(accessToken);
     }

@@ -1,16 +1,27 @@
 'use strict';
 const SpotifyWebApi = require('spotify-web-api-node');
+const router = require('express').Router();
+const passport = require('passport');
+const SpotifyStrategy = require('passport-spotify').Strategy;
 const config = require('../config');
 
-class SpotifyClient {
-    constructor() {}
+const spotifyClient = new class SpotifyClient {
+    constructor() {
+        router.get('/auth', passport.authenticate('spotify'), (req, res) => {});
+        router.get('/authCb', passport.authenticate('spotify', { failureRedirect: '/fail'}), 
+        (req, res) => {
+            res.redirect('/pass');
+        });
+
+        this.router = router;
+        this.config = config.Spotify;
+    }
 
     init(accessToken, refreshToken, expiresIn, profile) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.expiresIn = expiresIn;
         this.profile = profile;
-        this.config = config.Spotify;
         this.api = new SpotifyWebApi({
             clientId: this.config.clientId,
             clientSecret: this.config.clientSecret,
@@ -18,6 +29,15 @@ class SpotifyClient {
         });
         this.api.setAccessToken(accessToken);
     }
-}
+}();
 
-module.exports = new SpotifyClient();
+passport.use(new SpotifyStrategy({
+    clientID: config.Spotify.clientId,
+    clientSecret: config.Spotify.clientSecret,
+    callbackURL: config.Spotify.redirectUri
+}, (accessToken, refreshToken, expiresIn, profile, done) => {
+    spotifyClient.init(accessToken, refreshToken, expiresIn, profile);
+    return done(null, profile);
+}));
+
+module.exports = spotifyClient;

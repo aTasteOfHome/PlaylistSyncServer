@@ -4,6 +4,7 @@ const router = require('express').Router();
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
 const config = require('../config');
+const logger = require('../logger');
 
 const spotifyClient = new class SpotifyClient {
     constructor() {
@@ -27,6 +28,7 @@ const spotifyClient = new class SpotifyClient {
             clientSecret: this.config.clientSecret,
             redirectUri: this.config.redirectUri
         });
+        logger.log('Spotify auth completed successfully!');
         this.api.setAccessToken(accessToken);
     }
 }();

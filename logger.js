@@ -1,11 +1,15 @@
 'use strict';
 const fs = require('fs');
 
-function log(file, message) {
-    fs.appendFile(
-        `${file}.log`,
-        `${new Date().toLocaleString('en-US', {timeZone: 'America/New_York'})}:${message}\n`
-    );
+function log(message, file) {
+    message = `${new Date().toLocaleString('en-US', {timeZone: 'America/New_York'})}: ${message}`;
+
+    if (file) {
+        fs.appendFile(
+            `${file}.log`,
+            message + '\n'
+        );
+    }
 }
 
 module.exports = { log };

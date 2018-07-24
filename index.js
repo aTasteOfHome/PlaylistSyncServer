@@ -3,7 +3,7 @@ const express = require('express');
 const SpotifyClient = require('./clients/spotify');
 const passport = require('passport');
 const app = express();
-const login = require('./login');
+const logger = require('./logger');
 const config = require('./config');
 
 // Passport session setup.
@@ -29,11 +29,19 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/', (req, res) => res.send('Hello World'));
-app.get('/fail', (req, res) => res.send('Stuff failed'));
-app.get('/pass', (req, res) => res.send('Stuff passed!'));
+app.get('/fail', (req, res) => {
+  logger.log('Something failed');
+  logger.log('%o', res);
+  res.send('Stuff failed');
+});
+app.get('/pass', (req, res) => {
+  logger.log('Something passed');
+  logger.log('%o', res);
+  res.send('Stuff passed!');
+});
 app.use('/spotify', SpotifyClient.router);
 
 app.listen(config.port);
-console.log(`Listening on port ${config.port}...`);
+logger.log(`Listening on port ${config.port}...`);
 
 //organize by application? or organize by actions?

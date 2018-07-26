@@ -30,18 +30,18 @@ app.use(passport.session());
 
 app.get('/', (req, res) => res.send('Hello World'));
 app.get('/fail', (req, res) => {
-  logger.log('Something failed');
-  logger.log('%o', res);
+  logger.error('Something failed');
+  logger.error('%o', res);
   res.send('Stuff failed');
 });
 app.get('/pass', (req, res) => {
-  logger.log('Something passed');
-  logger.log('%o', res);
+  logger.debug('Something passed');
+  logger.debug('%o', res);
   res.send('Stuff passed!');
 });
 app.use('/spotify', SpotifyClient.router);
 
 app.listen(config.port);
-logger.log(`Listening on port ${config.port}...`);
+logger.debug(`Listening on port ${config.port}...`);
 
 //organize by application? or organize by actions?

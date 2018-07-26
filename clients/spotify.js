@@ -28,7 +28,7 @@ const spotifyClient = new class SpotifyClient {
             clientSecret: this.config.clientSecret,
             redirectUri: this.config.redirectUri
         });
-        logger.log('Spotify auth completed successfully!');
+        logger.debug('Spotify auth completed successfully!');
         this.api.setAccessToken(accessToken);
     }
 }();

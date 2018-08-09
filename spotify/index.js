@@ -39,12 +39,12 @@ app.get('/pass', (req, res) => {
   logger.debug('%o', res);
   res.send('Stuff passed!');
 });
-app.use('/spotify', SpotifyClient.router);
+app.use('/api', SpotifyClient.router);
 
 app.listen(config.port);
 logger.debug(`Listening on port ${config.port}...`);
 
 
 module.exports.run = (req, res) => {
-    res.redirect('/spotify');
+    res.redirect('/api');
 };
